@@ -1,40 +1,54 @@
-﻿#include <iostream>
+#include <iostream>
 #include <vector>
-#include <stack>
 using namespace std;
+
+class MyStack {
+private:
+    vector<long long> data;
+
+public:
+    void push(long long x) {
+        data.push_back(x);
+    }
+
+    void pop() {
+        if (!data.empty())
+            data.pop_back();
+    }
+
+    long long top() const {
+        return data.back();
+    }
+
+    bool empty() const {
+        return data.empty();
+    }
+};
 
 int main() {
     setlocale(LC_ALL, "Russian");
     system("chcp 65001 > nul");
 
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    cout << "Введите количетво элементов: \n";
+    cout << "Введите количество элементов: \n";
     int N;
-    if (!(cin >> N)) return 0;
+    cin >> N;
+
     vector<long long> A(N);
     cout << "Введите элементы: \n";
     for (int i = 0; i < N; ++i) cin >> A[i];
 
     vector<long long> ans(N);
-    stack<long long> st;
+    MyStack st;
 
     for (int i = N - 1; i >= 0; --i) {
         while (!st.empty() && st.top() <= A[i]) {
             st.pop();
         }
-        if (st.empty()) ans[i] = 0;
-        else ans[i] = st.top();
+        ans[i] = st.empty() ? 0 : st.top();
         st.push(A[i]);
     }
-    cout << "Ответ: \n";
-    for (int i = 0; i < N; ++i) {
-        cout << ans[i];
-        if (i + 1 < N) cout << ' ';
-    }
 
-    cout << "\n020303-АИСа-025 Динер З.М.";
-
-    return 0;
+    cout << "Ответ:\n";
+    for (int i = 0; i < N; ++i)
+        cout << ans[i] << ' ';
 }
